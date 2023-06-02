@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Content from "./Content";
 
@@ -51,8 +51,8 @@ const InfiniteScroll = () => {
 
   return (
     <div>
-      {data.map((item) => (
-        <Content key={item.id} content={item}>
+      {data.map((item, index) => (
+        <Content key={index} content={item}>
           {item.title}
         </Content>
       ))}
