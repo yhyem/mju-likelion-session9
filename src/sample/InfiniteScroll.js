@@ -20,10 +20,10 @@ const InfiniteScroll = () => {
 
       setData((prevData) => [...prevData, ...newData]); // 새로운 데이터를 기존 데이터 배열에 추가
       setPage((prevPage) => prevPage + 1); // 페이지 번호를 업데이트
-      setIsLoading(false); // 로딩이 끝난 후 false
     } catch (error) {
       console.log(error);
-      setIsLoading(false);
+    } finally {
+      setIsLoading(false); // 로딩이 끝난 후 false
     }
   };
 
