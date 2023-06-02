@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Content from "./Content";
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -8,46 +9,16 @@ const InfiniteScroll = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    // 초기 데이터 로딩
-    const fetchListData = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=ko-KR&page=1`
-        );
-        setData(response.data.results);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchListData();
-  }, []);
-
-  useEffect(() => {
-    // 페이지 변경 시 데이터 로딩
-    const fetchListData = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=ko-KR&page=${page}`
-        );
-        setData((prevData) => [...prevData, ...response.data.results]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchListData();
-  }, [page]);
-
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=ko-KR&page=${page}`
+        `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=ko-KR&page=${page}`
       );
       const newData = response.data.results;
 
       setData((prevData) => [...prevData, ...newData]);
-      setPage((prevPage) => prevPage + 1); // 페이지를 증가시킴
+      setPage((prevPage) => prevPage + 1);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -55,24 +26,32 @@ const InfiniteScroll = () => {
     }
   };
 
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      fetchData();
-    }
-  };
+  useEffect(() => {
+    fetchData(); // 초기 데이터 로딩
+  }, []);
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (
+        !isLoading &&
+        window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight
+      ) {
+        fetchData();
+        console.log("데이터 새로 로딩");
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isLoading, page]);
 
   return (
     <div>
       {data.map((item) => (
-        <div key={item.id}>{item.title}</div>
+        <Content key={item.id} content={item}>
+          {item.title}
+        </Content>
       ))}
       {isLoading && <div>Loading...</div>}
     </div>
