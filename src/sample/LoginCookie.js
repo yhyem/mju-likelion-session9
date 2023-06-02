@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import { useCookies } from "react-cookie"; // useCookies import
 
-function LoginCookie() {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [cookies, setCookie] = useCookies(["id"]); // 쿠키 훅
 
   const handleLogin = async () => {
     try {
@@ -11,9 +13,9 @@ function LoginCookie() {
       const response = await axios.post("/api/login", { username, password });
 
       // 응답에서 쿠키를 추출합니다.
-      const cookies = response.headers["set-cookie"];
-      // 쿠키를 저장합니다. (브라우저 환경에서는 자동으로 저장됩니다.)
-      document.cookie = cookies.join("; ");
+      const cookies = response.data.token;
+      // 쿠키에 토큰 저장
+      setCookie("id", cookies);
 
       // 로그인 성공 메시지를 출력합니다.
       console.log("로그인에 성공했습니다.");
@@ -42,4 +44,4 @@ function LoginCookie() {
   );
 }
 
-export default LoginCookie;
+export default Login;
