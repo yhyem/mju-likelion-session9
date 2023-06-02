@@ -30,7 +30,6 @@ const Form = () => {
             type="password"
             {...register("password", {
               min: { value: 3, message: "3이상 값을 입력해주세요." },
-              valueAsNumber: true,
               required: "값을 입력해주세요.",
             })}
           />
