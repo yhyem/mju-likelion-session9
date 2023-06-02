@@ -6,8 +6,9 @@ const YupForm = () => {
   const schema = yup.object().shape({
     id: yup.string().required("아이디를 입력해주세요."), // required 설정
     password: yup
-      .min(3, "3이상 값을 입력해주세요.")
-      .typeError("값을 입력해주세요."), // 최솟값, 최댓값 설정
+      .string()
+      .required("값을 입력해주세요.")
+      .min(3, "3이상 값을 입력해주세요."),
   });
 
   const {
