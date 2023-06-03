@@ -59,7 +59,7 @@ const InfiniteScroll = () => {
   return (
     <div>
       {data.map((item, index) => (
-        <Content key={item.id} content={item}>
+        <Content key={index} content={item}>
           {item.title}
         </Content>
       ))}
