@@ -14,7 +14,14 @@ const InfiniteScroll = () => {
     setIsLoading(true); // 데이터 로딩
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=ko-KR&page=${page}`
+        `https://api.themoviedb.org/3/movie/popular?language=ko-KR&page=${page}`,
+        {
+          method: "GET", //method 지정을 하지 않을 경우에 default 값은 GET이다. 사실상 필요 없는 코드
+          headers: {
+            accept: "application/json",
+            Authorization: "Bearer " + process.env.REACT_APP_API_KEY,
+          },
+        }
       );
       const newData = response.data.results;
 
@@ -52,7 +59,7 @@ const InfiniteScroll = () => {
   return (
     <div>
       {data.map((item, index) => (
-        <Content key={index} content={item}>
+        <Content key={item.id} content={item}>
           {item.title}
         </Content>
       ))}
