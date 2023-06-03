@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Content from "./Content";
 
-const apiKey = process.env.REACT_APP_API_KEY;
-
 const InfiniteScroll = () => {
   const [data, setData] = useState([]); // 불러온 영화 데이터를 저장하는 배열
   const [isLoading, setIsLoading] = useState(false); // 데이터 로딩 중인지 여부를 나타내는 상태 변수입니다.
@@ -59,7 +57,7 @@ const InfiniteScroll = () => {
   return (
     <div>
       {data.map((item, index) => (
-        <Content key={index} content={item}>
+        <Content key={item.id} content={item}>
           {item.title}
         </Content>
       ))}
